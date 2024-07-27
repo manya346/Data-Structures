@@ -1,0 +1,69 @@
+#include <iostream>
+
+struct node{
+  int val;
+  struct node* next;
+};
+
+struct node* head = NULL;
+
+void insertLast(int data)
+{
+  struct node *newNode = (struct node*)malloc(sizeof(struct node));
+  newNode->val = data;
+  newNode -> next = NULL;
+  if (head == NULL)
+    {
+      head = newNode;
+      head->next = head;
+      return;
+    }
+  struct node *curr = head;
+  while (curr->next != head)
+    {
+      curr = curr->next;
+    }
+  curr->next = newNode;
+  newNode->next = head;
+}
+
+void insertStart(int x){
+  struct node *newNode = (struct node*)malloc(sizeof(struct node));
+  newNode->val = x;
+  if (head == NULL)
+  {
+    head = newNode;
+    head->next = head;
+    return;
+  }
+  struct node* tail = head;
+  while(tail->next!=head){
+    tail = tail->next;
+  }
+  tail->next = newNode;
+  newNode->next = head;
+  head = newNode;
+}
+
+void display(){
+  struct node* temp = NULL;
+  temp = head;
+  while(temp->next!=head){
+    printf("%d ", temp->val);
+    temp = temp->next;
+  }
+  printf("%d ", temp->val);
+}
+
+int main(){
+  insertLast(2);
+  insertLast(3);
+  insertLast(5);
+  insertLast(4);
+  display();
+  insertStart(2);
+  insertStart(3);
+  insertStart(4);
+  printf("\n");
+  display();
+}
