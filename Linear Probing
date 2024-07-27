@@ -1,0 +1,34 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<cstdlib>
+#include<ctime>
+
+#define size 97
+
+int table[size];
+
+void insert(int x){
+  int key = x%size;
+  for(int i=0; i<size; i++){
+    int index = (key+i)%size;
+    if(table[index]==0){
+      table[key+i]=x;
+      return;
+    }
+  }
+}
+
+void display(){
+  for(int i=0; i<size; i++){
+    printf("%d ",table[i]);
+  }
+}
+
+int main(){
+  srand(time(0));
+  for(int i=0; i<48; i++){
+    int n = rand()%1000;
+    insert(n);
+  }
+  display();
+}
