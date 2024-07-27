@@ -1,0 +1,123 @@
+#include<iostream>
+
+using namespace std;
+
+struct TreeNode{
+   int val;
+   TreeNode* left;
+   TreeNode* right;
+};
+
+struct TreeNode* findMin(struct TreeNode* root){
+  while(root -> left != NULL){
+    root = root -> left;
+  }
+  return root;
+}
+
+
+struct TreeNode* findMax(struct TreeNode* root){
+  while(root -> right != NULL){
+    root = root -> right;
+  }
+  return root;
+}
+
+struct TreeNode *createNode(int data){
+  struct TreeNode* node = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+   node -> val = data;
+   node-> left = NULL;
+   node -> right = NULL;
+   return node;
+}
+
+struct TreeNode *insertNode(struct TreeNode *node, int val){
+   if (node == NULL){
+       return createNode(val);
+   }
+
+   if(val < node -> val){
+       node -> left = insertNode(node -> left, val);
+   }
+   else if(val > node -> val){
+       node -> right = insertNode(node -> right, val);
+   }
+   return node;
+}
+
+struct TreeNode* searchTree(struct TreeNode* root, int val){
+   if(root == NULL || root -> val == val){
+       return root;
+   }
+
+   if(root -> val > val){
+       return searchTree(root -> left, val);
+   }
+
+   return searchTree(root->right, val);
+}
+
+void inorder(struct TreeNode* root)
+{
+    if (root != NULL) {
+        inorder(root->left);
+        printf("%d ", root->val);
+        inorder(root->right);
+    }
+}
+
+struct TreeNode* deleteNode(struct TreeNode* node, int val){
+  if (node == NULL){
+    return node;
+  }
+
+  if (node->val > val) {
+      node->left = deleteNode(node->left, val);
+  }
+  else if (node->val < val) {
+      node->right = deleteNode(node->right, val);
+  }
+  else{
+    if(node -> left == NULL){
+      struct TreeNode* temp = node -> right;
+      free(node);
+      return temp;
+    }
+
+    else if (node -> right == NULL){
+      struct TreeNode* temp = node -> left;
+      free(node);
+      return temp;
+    }
+
+    struct TreeNode* temp = findMin(node->right);
+    node -> val = temp -> val;
+    node -> right = deleteNode(node->right, node->val);
+  }
+  return node;
+}
+
+int main(){
+  struct TreeNode* root = NULL;
+  root = insertNode(root, 70);
+  root = insertNode(root, 20);
+  root = insertNode(root, 80);
+  root = insertNode(root, 50);
+  root = insertNode(root, 90);
+  root = insertNode(root, 30);
+  root = insertNode(root, 40);
+  inorder(root);
+  root = deleteNode(root, 70);
+  printf("\n");
+  inorder(root);
+  printf("\n");
+  printf("%d", findMin(root) -> val);
+  printf("\n");
+  printf("%d", findMax(root) -> val);
+  printf("\n");
+  int key = 6;
+  if (searchTree(root, key) == NULL)
+    printf("%d not found\n", key);
+  else
+    printf("%d found\n", key);
+}
