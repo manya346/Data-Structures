@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+#define MAX_SIZE 100
+
+struct Graph {
+    int V;
+    bool visited[MAX_SIZE];
+    int* adj[MAX_SIZE];
+};
+
+void addEdge(struct Graph* graph, int v, int w) {
+  int index = graph -> V;
+  graph->adj[v][index] = w;
+  graph -> V = index+1;
+}
+
+void DFS(struct Graph* graph, int v) {
+    graph->visited[v] = true;
+    printf("%d ", v);
+
+    for (int i = 0; i < graph->V; ++i) {
+        int vertex = graph->adj[v][i];
+        if (!graph->visited[vertex])
+            DFS(graph, vertex);
+    }
+}
+
+void BFS(struct Graph* graph, int v) {
+    int queue[MAX_SIZE];
+    int front = 0, rear = 0;
+
+    graph->visited[v] = true;
+    queue[rear++] = v;
+
+    while (front != rear) {
+        int currentNode = queue[front++];
+        printf("%d ", currentNode);
+
+        for (int i = 0; i < graph->V; ++i) {
+            int neighbor = graph->adj[currentNode][i];
+            if (!graph->visited[neighbor]) {
+                graph->visited[neighbor] = true;
+                queue[rear++] = neighbor;
+            }
+        }
+    }
+}
+
+int main() {
+    struct Graph g;
+    g.V = 0;
+
+    for (int i = 0; i < MAX_SIZE; ++i) {
+        g.visited[i] = false;
+        g.adj[i] = (int*)malloc(MAX_SIZE * sizeof(int));
+    }
+
+    addEdge(&g, 0, 1);
+    addEdge(&g, 0, 2);
+    addEdge(&g, 1, 2);
+    addEdge(&g, 2, 0);
+    addEdge(&g, 2, 3);
+
+    printf("Depth First Traversal (starting from vertex 2):\n");
+    DFS(&g, 2);
+
+    printf("\nBreadth First Traversal (starting from vertex 2):\n");
+  
+    for (int i = 0; i < MAX_SIZE; ++i) {
+        g.visited[i] = false;
+    }
+  
+    BFS(&g, 2);
+
+    return 0;
+}
