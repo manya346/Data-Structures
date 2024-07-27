@@ -1,0 +1,68 @@
+#include <iostream>
+#include<vector>
+#include<cmath>
+
+using namespace std;
+
+struct Node{
+  int data;
+  struct Node* left;
+  struct Node* right;
+};
+
+struct Node* createNode(int val){
+  struct Node* newnode = (struct Node*)malloc(sizeof(Node));
+  newnode -> left = NULL;
+  newnode -> right = NULL;
+  newnode -> data = val;
+  return newnode;
+}
+
+struct Node* insertNode(struct Node* root, int val){
+  if(root == NULL){
+    return createNode(val);
+  }
+
+  if(root->data > val){
+    root ->left = insertNode(root->left, val);
+  }
+  else{
+    root->right = insertNode(root->right, val);
+  }
+  return root;
+}
+
+void PrintHoax(struct Node* root, int country){
+  int arr[100];
+  int i = 0;
+  int count = 0;
+  while(root!=NULL && root->data!=country){
+    if(root->data>country){
+      root=root->left;
+      // printf("%d ",root->data);
+      arr[i] = root->data;
+    }
+    else{
+      root=root->right;
+      // printf("%d ",root->data);
+      arr[i] = root->data;
+    }
+    i++;
+    count++;
+  }
+  for(int i = count-1; i>=0; i--){
+    printf("%d ", arr[i]);
+  }  
+}
+
+int main(){
+  struct Node* root = (struct Node*)malloc(sizeof(struct Node));
+  root = insertNode(root, 8);
+  root = insertNode(root, 4);
+  root = insertNode(root, 12);
+  root = insertNode(root, 3);
+  root = insertNode(root, 5);
+  root = insertNode(root, 11);
+  root = insertNode(root, 13);
+  root = insertNode(root, 6);
+  PrintHoax(root, 6);
