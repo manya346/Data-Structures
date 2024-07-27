@@ -1,0 +1,32 @@
+#include <iostream>
+#include<queue>
+
+using namespace std;
+
+int winner(int n, int k){
+  queue<int> q1;
+  int i = 1;
+  while(i<=n){
+    q1.push(i);
+    i++;
+  }
+
+  while(q1.size()!=1){
+    int j =1;
+    while(j<k){
+      int temp = q1.front();
+      q1.push(temp);
+      q1.pop();
+      j++;
+    }
+    q1.pop();
+  }
+  return q1.front();
+}
+
+int main(){
+  int n=5,k=2;
+  int ans = winner(n,k);
+  printf("Winner is: %d",ans);
+  return 0;
+}
