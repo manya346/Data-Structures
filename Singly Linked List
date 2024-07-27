@@ -1,0 +1,121 @@
+#include<iostream>
+
+struct node{
+  int data;
+  struct node* link;
+};
+
+struct node* head = NULL;
+
+void insert_beg(int x){
+  struct node* newnode;
+  newnode = (struct node*)malloc(sizeof(struct node));
+  newnode -> data = x;
+  newnode -> link = NULL;
+  if(head==NULL){
+    head = newnode;
+  }
+  else{
+    newnode -> link = head;
+    head = newnode;
+  }
+}
+
+void insert_end(int x){
+  struct node* newnode;
+  struct node* temp = NULL;
+  newnode = (struct node*)malloc(sizeof(struct node));
+  newnode -> data = x;
+  newnode -> link =  NULL;
+  temp = head;
+  if(head == NULL){
+    head = newnode;
+  }
+  else{
+  while(temp->link!=NULL){
+    temp = temp -> link;
+  }
+  temp -> link = newnode;
+}
+}
+
+void insert_n(int x, int n){
+  struct node* newnode;
+  newnode = (struct node*)malloc(sizeof(struct node));
+  struct node* temp = NULL;
+  newnode -> data = x;
+  newnode -> link = NULL;
+  temp = head;
+  int i = 1;
+  while(i<n-1){
+    temp = temp -> link;
+    i++;
+  }
+  newnode -> link = temp -> link;
+  temp -> link = newnode;
+}
+
+void delete_beg(){
+  struct node* temp = NULL;
+  temp = head;
+  if(head == NULL){
+    printf("Linked List is empty.");
+  }
+  head = head -> link;
+  free(temp);
+}
+
+void delete_end(){
+  struct node* temp;
+  struct node* temp2;
+  temp = head;
+  while(temp->link->link!=NULL){
+    temp = temp -> link;
+  }
+  temp2 = temp->link;
+  temp -> link = NULL;
+  free(temp2);
+}
+
+void delete_n(int n){
+  struct node* temp;
+  struct node* temp2;
+  temp = head;
+  for(int i = 0; i<n-2; i++){
+    temp = temp -> link;
+  }
+  temp2 = temp->link->link;
+  temp -> link = temp2;
+}
+
+void display(){
+  struct node* temp=NULL;
+  temp = head;
+  if(head == NULL){
+    printf("Linked List is empty.");
+  }
+  while(temp!=NULL){
+    printf("%d ", temp->data);
+    temp = temp -> link;
+  }
+}
+
+int main(){
+  insert_beg(1);
+  insert_beg(2);
+  insert_beg(3);
+  insert_end(1);
+  insert_end(2);
+  insert_end(3);
+  insert_n(4, 4);
+  display();
+  printf("\n");
+  delete_beg();
+  display();
+  printf("\n");
+  delete_end();
+  display();
+  printf("\n");
+  delete_n(2);
+  display();
+}
